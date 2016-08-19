@@ -186,6 +186,7 @@ Variable | Description | Default
 `HAPROXY_DOMAIN` | The domain to match against | `haproxy.service.consul` (for `app.haproxy.service.consul`).
 `HAPROXY_MODE` | Forward Consul service or Marathon apps | `consul` (`marathon` also available, as described [above](#modes))
 `HAPROXY_USESSL` | Enable the SSL frontend (see [below](#ssl-termination)) | `false`
+`HAPROXY_CERT` | PEM-encoded SSL certificate to use (see [below](#ssl-termination)) | not set
 `HAPROXY_STATS` | Enable statistics UI on separate port (see [below](#ssl-termination)) | `false`
 `HAPROXY_STATS_TITLE` | Change statistics title (see [below](#ssl-termination)) | `HAProxy Statistics`
 `HAPROXY_STATS_URI` | Change statistics URI (see [below](#ssl-termination)) | `/`
@@ -213,6 +214,8 @@ Variable | Description | Default
 ### SSL Termination
 
 If you wish to configure HAProxy to terminate incoming SSL connections, you must set the environment variable `HAPROXY_USESSL=true`, and mount your SSL certificate at `/haproxy/ssl.crt` - this file should contain both the SSL certificate and the private key to use (with no passphrase), in PEM format. You should also include any intermediate certificates in this bundle.
+
+You may provide your SSL certificate and key in PEM format by setting `HAPROXY_CERT` instead of mounting it in the file system. Any `#` will be replaced by a newline so that it may be set via a Docker Compose environment file.  
 
 If you do not provide an SSL certificate at container runtime, a self-signed certificate will be generated for the value of `*.HAPROXY_DOMAIN`.
 

@@ -30,6 +30,9 @@ Configure using the following environment variables:
   HAPROXY_USESSL        Enable the SSL frontend
                         (default: false)
 
+  HAPROXY_CERT          PEM-encoded SSL certificate and key
+                        (default: not set)
+
   HAPROXY_STATS         Enable Statistics UI on separate port
                         (default: false)
 
@@ -78,9 +81,13 @@ function launch_haproxy {
     fi
 
     # Generate self-signed certificate, if required.
-    if [[ ( -n "${HAPROXY_USESSL}" ) && ! -f /haproxy/ssl.crt ]]; then
-      openssl req -x509 -newkey rsa:2048 -nodes -keyout /haproxy/key.pem -out /haproxy/cert.pem -days 365 -sha256 -subj "/CN=*.${HAPROXY_DOMAIN}"
-      cat /haproxy/cert.pem /haproxy/key.pem > /haproxy/ssl.crt
+    if [[ -n "${HAPROXY_USESSL}" ]]; then
+      if [[ -n "${HAPROXY_CERT}" ]]; then
+        echo "${HAPROXY_CERT}" | tr "#" "\n" > /haproxy/ssl.crt
+      elif [[ ! -f /haproxy/ssl.crt ]]; then
+        openssl req -x509 -newkey rsa:2048 -nodes -keyout /haproxy/key.pem -out /haproxy/cert.pem -days 365 -sha256 -subj "/CN=*.${HAPROXY_DOMAIN}"
+        cat /haproxy/cert.pem /haproxy/key.pem > /haproxy/ssl.crt
+      fi
     fi
 
     # Remove haproxy PID file, in case we're restarting
