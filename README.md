@@ -1,6 +1,6 @@
 # haproxy-consul
 
-Dynamic haproxy configuration using consul packed into a Docker container that weighs 18MB.
+Dynamic HAProxy configuration using Consul packed into a Docker container that weighs 18MB.
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc/generate-toc again -->
 **Table of Contents**
@@ -22,14 +22,14 @@ Dynamic haproxy configuration using consul packed into a Docker container that w
 
 # Overview
 
-This project combines [Alpine Linux](https://www.alpinelinux.org), [consul template](https://github.com/hashicorp/consul-template), and [haproxy](http://haproxy.org)
+This project combines [Alpine Linux](https://www.alpinelinux.org), [Consul Template](https://github.com/hashicorp/consul-template), and [HAProxy](http://haproxy.org)
 to create a proxy that forwards traffic to apps registered in Marathon and forwarded with [marathon-consul](https://github.com/CiscoCloud/marathon-consul).
 
 ## How it works
 
-First, you must set up a wildcard dns (using something like CloudFlare or [xip.io](http://xip.io)). This means that if your domain is `example.com`, any request to  a `<name>.example.com` will resolve to the IP of your haproxy container.
+First, you must set up a wildcard DNS (using something like CloudFlare or [xip.io](http://xip.io)). This means that if your domain is `example.com`, any request to  a `<name>.example.com` will resolve to the IP of your haproxy container.
 
-Inside the haproxy container, a header match is used to map `<application>.example.com` to the service registered in consul under `application`.
+Inside the HAProxy container, a header match is used to map `<application>.example.com` to the service registered in consul under `application`.
 
 ## Building
 
@@ -41,19 +41,19 @@ docker build -t haproxy .
 
 ### Modes
 
-haproxy-consul can run in two different modes: forwarding either consul services
+haproxy-consul can run in two different modes: forwarding either Consul services
 (the default) or Marathon apps. This behavior is controlled by the
 `HAPROXY_MODE` variable, which should be set to `consul` or
 `marathon`.
 
 #### Reload configuration
 
-It's possible to reload the HA proxy configuration without restarting the container itself.
+It's possible to reload the HAProxy configuration without restarting the container itself.
 `docker exec -it <container_id> bash reload.sh`
 
 #### consul Configuration
 
-When `HAPROXY_MODE` is set to `consul`, haproxy-consul uses consul service names
+When `HAPROXY_MODE` is set to `consul`, haproxy-consul uses Consul service names
 to set subdomains. No other configuration is required.
 
 #### Marathon Configuration
@@ -63,9 +63,9 @@ be app information in the `marathon` prefix of the Consul KV store. It was
 written to work with the information provided by
 [marathon-consul](https://github.com/CiscoCloud/marathon-consul).
 
-By default, haproxy will forward all Marathon-assigned ports. So if you specify
+By default, HAProxy will forward all Marathon-assigned ports. So if you specify
 that your application should own port 10000 in the "ports" member of the app
-JSON, haproxy will open port 10000 to direct traffic to your app. This works
+JSON, HAProxy will open port 10000 to direct traffic to your app. This works
 with auto-assigned ports (ports set to 0), as well. This is all automatic, you
 don't need to think about it other than to pull the ports from Marathon.
 
@@ -105,7 +105,7 @@ name specified plus [`HAPROXY_DOMAIN`](#options)) to the app workers. This
 extends to as many ports as you'd care to give it in the form
 `HTTP_PORT_IDX_{port_number}_NAME`.
 
-This particular app results in something like the following haproxy
+This particular app results in something like the following HAProxy
 configuration:
 
 ```
@@ -142,7 +142,7 @@ listen hello-rails_10000
 
 ### Usage
 
-If you don't want to configure wildcard dns, you can use xip.io. In this example, we are going to assume that the IP of your server is `180.19.20.21`, then all domains in `180.19.20.21.xip.io` will forward to your host.
+If you don't want to configure wildcard DNS, you can use xip.io. In this example, we are going to assume that the IP of your server is `180.19.20.21`, then all domains in `180.19.20.21.xip.io` will forward to your host.
 
 Start the container as follows:
 
@@ -184,11 +184,11 @@ Configure using the following environment variables:
 Variable | Description | Default
 ---------|-------------|---------
 `HAPROXY_DOMAIN` | The domain to match against | `haproxy.service.consul` (for `app.haproxy.service.consul`).
-`HAPROXY_MODE` | forward consul service or Marathon apps | `consul` (`marathon` also available, as described [above](#modes))
+`HAPROXY_MODE` | Forward Consul service or Marathon apps | `consul` (`marathon` also available, as described [above](#modes))
 `HAPROXY_USESSL` | Enable the SSL frontend (see [below](#ssl-termination)) | `false`
-`HAPROXY_STATS` | Enable Statistics UI on port 1936 (see [below](#ssl-termination)) | `false`
-`HAPROXY_STATS_TITLE` | Change Statistics Title (see [below](#ssl-termination)) | `false`
-`HAPROXY_STATS_URI` | Change Statistics URI (see [below](#ssl-termination)) | `false`
+`HAPROXY_STATS` | Enable statistics UI on port 1936 (see [below](#ssl-termination)) | `false`
+`HAPROXY_STATS_TITLE` | Change statistics title (see [below](#ssl-termination)) | `HAProxy Statistics`
+`HAPROXY_STATS_URI` | Change statistics URI (see [below](#ssl-termination)) | `/`
 
 consul-template variables:
 
@@ -211,7 +211,7 @@ Variable | Description | Default
 
 ### SSL Termination
 
-If you wish to configure HAproxy to terminate incoming SSL connections, you must set the environment variable `HAPROXY_USESSL=true`, and mount your SSL certificate at `/haproxy/ssl.crt` - this file should contain both the SSL certificate and the private key to use (with no passphrase), in PEM format. You should also include any intermediate certificates in this bundle.
+If you wish to configure HAProxy to terminate incoming SSL connections, you must set the environment variable `HAPROXY_USESSL=true`, and mount your SSL certificate at `/haproxy/ssl.crt` - this file should contain both the SSL certificate and the private key to use (with no passphrase), in PEM format. You should also include any intermediate certificates in this bundle.
 
 If you do not provide an SSL certificate at container runtime, a self-signed certificate will be generated for the value of `*.HAPROXY_DOMAIN`.
 

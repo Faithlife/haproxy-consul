@@ -56,6 +56,6 @@ backend stats
     stats hide-version
     stats refresh 5s
     stats scope .
-    stats realm {{ or (env "HAPROXY_STATS_TITLE") "Haproxy Statistics" }}
+    stats realm {{ or (env "HAPROXY_STATS_TITLE") "HAProxy Statistics" }}
     stats uri {{ or (env "HAPROXY_STATS_URI") "/" }}
 {{ end }}

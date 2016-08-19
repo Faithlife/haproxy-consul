@@ -27,10 +27,21 @@ Configure using the following environment variables:
                         (default "consul" for Consul services, can also be set
                         to "marathon" for Marathon apps through marathon-consul)
 
+  HAPROXY_USESSL        Enable the SSL frontend
+                        (default: false)
+
+  HAPROXY_STATS         Enable Statistics UI on separate port
+                        (default: false)
+
+  HAPROXY_STATS_TITLE   The statistics title
+                        (default: HAProxy Statistics)
+
+  HAPROXY_STATS_URI     The statistics URI
+                        (default: /)
+
 Consul-template variables:
   CONSUL_TEMPLATE       Location of consul-template bin
                         (default /usr/local/bin/consul-template)
-
 
   CONSUL_CONNECT        The consul connection
                         (default consul.service.consul:8500)
@@ -41,8 +52,8 @@ Consul-template variables:
   CONSUL_LOGLEVEL       Valid values are "debug", "info", "warn", and "err".
                         (default is "info")
 
-  CONSUL_TOKEN		Consul ACL token to use
-			(default is not set)
+  CONSUL_TOKEN          Consul ACL token to use
+                        (default is not set)
 
 USAGE
 }
