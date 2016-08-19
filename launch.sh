@@ -39,6 +39,9 @@ Configure using the following environment variables:
   HAPROXY_STATS_URI     The statistics URI
                         (default: /)
 
+  HAPROXY_STATS_PORT    The statistics port
+                        (default: 1936)
+
 Consul-template variables:
   CONSUL_TEMPLATE       Location of consul-template bin
                         (default /usr/local/bin/consul-template)

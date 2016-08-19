@@ -36,7 +36,7 @@ frontend www
 
 {{ if env "HAPROXY_STATS" }}
 frontend stats
-    bind *:1936
+    bind *:{{ or (env "HAPROXY_STATS_PORT") "1936" }}
     mode http
     use_backend stats
 {{ end }}

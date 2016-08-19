@@ -186,9 +186,10 @@ Variable | Description | Default
 `HAPROXY_DOMAIN` | The domain to match against | `haproxy.service.consul` (for `app.haproxy.service.consul`).
 `HAPROXY_MODE` | Forward Consul service or Marathon apps | `consul` (`marathon` also available, as described [above](#modes))
 `HAPROXY_USESSL` | Enable the SSL frontend (see [below](#ssl-termination)) | `false`
-`HAPROXY_STATS` | Enable statistics UI on port 1936 (see [below](#ssl-termination)) | `false`
+`HAPROXY_STATS` | Enable statistics UI on separate port (see [below](#ssl-termination)) | `false`
 `HAPROXY_STATS_TITLE` | Change statistics title (see [below](#ssl-termination)) | `HAProxy Statistics`
 `HAPROXY_STATS_URI` | Change statistics URI (see [below](#ssl-termination)) | `/`
+`HAPROXY_STATS_PORT` | Change statistics port (see [below](#ssl-termination)) | `1936`
 
 consul-template variables:
 
